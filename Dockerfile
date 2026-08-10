@@ -1,4 +1,4 @@
-FROM golang:1.22 AS builder
+FROM golang:1.26 AS builder
 COPY ./ /go/src
 WORKDIR /go/src
 RUN go mod download && go build -o /bin/go-clamav .
