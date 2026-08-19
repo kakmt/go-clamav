@@ -11,7 +11,12 @@ COPY conf.d/freshclam.conf.template /etc/clamav/freshclam.conf.template
 COPY src/run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh && \
     chmod 644 /etc/clamav/freshclam.conf && \
-    chown 100:102 /var/lib/clamav 
+    chown clamav:clamav /var/lib/clamav
 
+USER clamav
+# clamd と共有する volume。ECS は空 volume 作成時に VOLUME 宣言パスの所有権を
+# 引き継ぐため、clamav パッケージが両イメージで同一 uid/gid(100:102) を割り当てる
+# ことで起動順によらず所有権が揃う
+VOLUME ["/var/lib/clamav"]
 # read-only root filesystem 対応: 設定生成と freshclam 実行は run.sh 内で行う
 CMD ["run.sh"]
