@@ -6,9 +6,6 @@ DEFAULT_INTERVAL=3600
 # 環境変数FRESHCLAM_INTERVALが設定されていない場合はデフォルト値を使用
 INTERVAL=${FRESHCLAM_INTERVAL:-$DEFAULT_INTERVAL}
 
-# Fargateなどでボリュームマウントする際に権限が書き変わるので、再度権限を変更
-chmod 777 /var/lib/clamav
-
 # read-only root filesystem 対応:
 # read-only な /etc/clamav ではなく、書き込み可能な DB ディレクトリ /var/lib/clamav に設定を生成する
 envsubst < /etc/clamav/freshclam.conf.template > /var/lib/clamav/freshclam.conf
